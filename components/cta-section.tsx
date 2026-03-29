@@ -25,10 +25,15 @@ export function CTASection() {
         </p>
         
         <Link href="/analyze">
-          <Button size="lg" className="rounded-full px-12 h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm tracking-widest uppercase shadow-2xl shadow-primary/40 group">
-            Start Analyzing Now
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <button className="pearl-button">
+            <div className="wrap">
+              <p>
+                <span>✧</span>
+                <span>✦</span>
+                Start Analyzing Now
+              </p>
+            </div>
+          </button>
         </Link>
       </div>
     </section>

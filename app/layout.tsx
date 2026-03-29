@@ -13,21 +13,21 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: '/1.png',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
+        url: '/1.png',
       },
       {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/1.png',
+        type: 'image/png',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/1.png',
   },
 }
+
+import SoftAurora from '@/components/SoftAurora'
 
 export default function RootLayout({
   children,
@@ -36,8 +36,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
-        {children}
+      <body className="font-sans antialiased text-foreground">
+        <div className="fixed inset-0 -z-10 bg-background">
+          <div className="absolute inset-0 opacity-60">
+            <SoftAurora
+              speed={0.6}
+              scale={1.5}
+              brightness={1}
+              color1="#f7f7f7"
+              color2="#e100ff"
+              noiseFrequency={2.5}
+              noiseAmplitude={1}
+              bandHeight={0.5}
+              bandSpread={1}
+              octaveDecay={0.1}
+              layerOffset={0}
+              colorSpeed={1}
+              enableMouseInteraction
+              mouseInfluence={0.25}
+            />
+          </div>
+          {/* Subtle noise overlay for texture */}
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+        </div>
+        <div className="relative z-0 min-h-screen">
+          {children}
+        </div>
         <Analytics />
       </body>
     </html>

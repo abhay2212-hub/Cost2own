@@ -20,9 +20,10 @@ export function HeroSection() {
             <span className="text-sm font-semibold tracking-wide text-foreground uppercase">High-Touch Precision</span>
           </div>
           
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-8">
-            Knowledge is power.<br />
-            <span className="bg-linear-to-r from-primary via-accent to-primary-foreground bg-clip-text text-transparent">Commit with confidence.</span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-foreground leading-tight sm:leading-[1.1] tracking-tight mb-8">
+            <span className="bg-linear-to-r from-primary via-accent to-primary-foreground bg-clip-text text-transparent">
+              Analyse finances for your future assets
+            </span>
           </h1>
           
           <p className="mt-8 text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
@@ -32,15 +33,15 @@ export function HeroSection() {
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
             <Link href="/analyze">
-              <Button size="lg" className="rounded-full px-12 h-16 bg-[#0a0505] hover:bg-[#1a1515] text-white font-[900] text-sm tracking-[0.2em] uppercase shadow-2xl shadow-black/40 group transition-all hover:scale-105 active:scale-95 border border-white/5 relative overflow-hidden">
-                <span className="relative z-10 [text-shadow:_1.5px_0_0_rgba(255,0,0,0.4),_-1.5px_0_0_rgba(0,0,255,0.4)]">
-                  Start Analyzing Now
-                </span>
-                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform relative z-10 stroke-[1.5]" />
-                
-                {/* Subtle Inner Glow */}
-                <div className="absolute inset-0 bg-linear-to-tr from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </Button>
+              <button className="pearl-button">
+                <div className="wrap">
+                  <p>
+                    <span>✧</span>
+                    <span>✦</span>
+                    Start Analyzing Now
+                  </p>
+                </div>
+              </button>
             </Link>
           </div>
         </div>

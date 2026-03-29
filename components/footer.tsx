@@ -10,10 +10,8 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6 group">
-              <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-accent flex items-center justify-center p-0.5 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-                <div className="w-full h-full bg-background rounded-full flex items-center justify-center">
-                  <span className="text-foreground font-black text-xs">C2O</span>
-                </div>
+              <div className="w-10 h-10 overflow-hidden rounded-full shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform ring-1 ring-white/10">
+                <img src="/1.png" alt="Cost2own Logo" className="w-full h-full object-cover" />
               </div>
               <span className="font-black text-xl tracking-tighter text-foreground group-hover:text-primary transition-colors">Cost2own</span>
             </Link>

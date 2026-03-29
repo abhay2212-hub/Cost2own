@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -34,16 +34,6 @@ const assetTypes = [
   { value: "property", label: "Commercial Property", icon: Landmark },
 ]
 
-const loanTerms = [
-  { value: "3", label: "3 Years" },
-  { value: "5", label: "5 Years" },
-  { value: "7", label: "7 Years" },
-  { value: "10", label: "10 Years" },
-  { value: "15", label: "15 Years" },
-  { value: "20", label: "20 Years" },
-  { value: "30", label: "30 Years" },
-]
-
 const countries = [
   { value: "us", label: "United States", currency: "USD", symbol: "$" },
   { value: "in", label: "India", currency: "INR", symbol: "₹" },
@@ -64,6 +54,31 @@ export function AssetAnalysisForm({ onAnalyze, isLoading }: AssetAnalysisFormPro
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [loanTerm, setLoanTerm] = useState("15")
   const [selectedCountry, setSelectedCountry] = useState(countries[0])
+  
+  // Debounced location suggestions
+  useEffect(() => {
+    if (location.trim().length < 1) {
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/suggest-location", {
+          method: "POST",
+          body: JSON.stringify({ country: selectedCountry.label, query: location }),
+        })
+        const data = await res.json()
+        setSuggestions(data.suggestions || [])
+        setShowSuggestions(true)
+      } catch (err) {
+        console.error("Suggestion error:", err)
+      }
+    }, 400)
+
+    return () => clearTimeout(timer)
+  }, [location, selectedCountry.label])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -151,18 +166,27 @@ export function AssetAnalysisForm({ onAnalyze, isLoading }: AssetAnalysisFormPro
             onChange={async (e) => {
               const val = e.target.value
               setLocation(val)
-              if (val.length >= 2) {
-                try {
-                  const res = await fetch("/api/suggest-location", {
-                    method: "POST",
-                    body: JSON.stringify({ country: selectedCountry.label, query: val }),
-                  })
-                  const data = await res.json()
-                  setSuggestions(data.suggestions || [])
-                  setShowSuggestions(true)
-                } catch (err) {
-                  console.error("Suggestion error:", err)
-                }
+              
+              if (val.trim().length >= 1) {
+                // Fetch suggestions after a small delay
+                const delayDebounceFn = setTimeout(async () => {
+                  try {
+                    const res = await fetch("/api/suggest-location", {
+                      method: "POST",
+                      body: JSON.stringify({ 
+                        country: selectedCountry.label, 
+                        countryCode: selectedCountry.value,
+                        query: val 
+                      }),
+                    })
+                    const data = await res.json()
+                    setSuggestions(data.suggestions || [])
+                    setShowSuggestions(true)
+                  } catch (err) {
+                    console.error("Suggestion error:", err)
+                  }
+                }, 300)
+                return () => clearTimeout(delayDebounceFn)
               } else {
                 setSuggestions([])
                 setShowSuggestions(false)
@@ -230,20 +254,19 @@ export function AssetAnalysisForm({ onAnalyze, isLoading }: AssetAnalysisFormPro
       {/* Loan Term */}
       <div className="space-y-2">
         <Label htmlFor="loanTerm" className="text-sm font-medium text-foreground">
-          Preferred Loan Term
+          Preferred Loan Term (Years)
         </Label>
-        <Select value={loanTerm} onValueChange={setLoanTerm}>
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="Select loan term" />
-          </SelectTrigger>
-          <SelectContent>
-            {loanTerms.map((term) => (
-              <SelectItem key={term.value} value={term.value}>
-                {term.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Input
+          id="loanTerm"
+          type="number"
+          min="1"
+          max="50"
+          value={loanTerm}
+          onChange={(e) => setLoanTerm(e.target.value)}
+          placeholder="e.g., 15"
+          className="h-12"
+          required
+        />
       </div>
 
       {/* Submit Button */}
